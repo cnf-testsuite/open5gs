@@ -42,8 +42,8 @@ extraDeploy: []
 
 image:
   registry: docker.io
-  repository: openverso/ueransim
-  tag: 3.2.2
+  repository: conformance/ueransim
+  tag: latest
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
