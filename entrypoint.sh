@@ -31,8 +31,13 @@ shift
 case "$command" in
 
 ue) 
-    sleep 15
-    export GNB_IP=${GNB_IP:-"$(host -4 $GNB_HOSTNAME |awk '/has.*address/{print $NF; exit}')"}
+    until [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]];
+    do
+        export ip=$(host -4 $GNB_HOSTNAME | awk '/has.*address/{print $NF; exit}')
+        echo "Waitting for GNB Host to come online"
+        sleep 5
+    done
+    export GNB_IP=$ip
     echo "GNB_IP: $GNB_IP"
     envsubst < /etc/ueransim/ue.yaml > ue.yaml
     echo "Launching ue: nr-ue -c ue.yaml"
