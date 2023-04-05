@@ -1,0 +1,8 @@
+---
+release_name: open5gs
+helm_repository:
+  name: openverso
+  repo_url: https://gradiant.github.io/openverso-charts/
+helm_chart: openverso/open5gs
+helm_values: "--version 2.0.8 --values ./5gSA-values.yaml"
+allowlist_helm_chart_container_names: [falco, node-cache, nginx, coredns, calico-node, kube-proxy, nginx-proxy]
