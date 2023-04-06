@@ -21,9 +21,9 @@ jobs:
       run: |
         export CLUSTER=$(uuidgen)
         echo "export CLUSTER=$CLUSTER" > cluster.env
-        echo kind create cluster --name $CLUSTER --config=/tmp/cluster.yml --kubeconfig ./$CLUSTER.conf
+        echo kind create cluster --name $CLUSTER --kubeconfig ./$CLUSTER.conf
         kind --version
-        kind create cluster --name $CLUSTER --config=/tmp/cluster.yml --kubeconfig ./$CLUSTER.conf
+        kind create cluster --name $CLUSTER --kubeconfig ./$CLUSTER.conf
         export KUBECONFIG=$(pwd)/$CLUSTER.conf
         kubectl get nodes 
     - name: Install Crystal
