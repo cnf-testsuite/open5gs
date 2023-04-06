@@ -33,8 +33,6 @@ jobs:
     - name: Install Testsuite
       run: |
         source <(curl -s https://raw.githubusercontent.com/cncf/cnf-testsuite/main/curl_install.sh)
-        source cluster.env
-        export KUBECONFIG=$(pwd)/$CLUSTER.conf
     - name: Check Testsuite
       run: |
         export PATH=$HOME/.cnf-testsuite:$PATH
@@ -42,12 +40,15 @@ jobs:
     - name: Install Open5gs 
       run: |
         export PATH=$HOME/.cnf-testsuite:$PATH
-        cnf-testsuite version
+        source cluster.env
+        export KUBECONFIG=$(pwd)/$CLUSTER.conf
         cnf-testsuite -l info cnf_setup cnf-config=./sample-open5gs/cnf-testsuite.yml
         cnf-testsuite -l info cnf_setup cnf-config=./sample-ueransim/cnf-testsuite.yml
     - name: Run Cert for Open5gs 
       run: |
         export PATH=$HOME/.cnf-testsuite:$PATH
+        source cluster.env
+        export KUBECONFIG=$(pwd)/$CLUSTER.conf
         cnf-testsuite cert ~cert_resilience ~cni_compatible 
     - name: Delete Cluster
       if: ${{ always() }}
