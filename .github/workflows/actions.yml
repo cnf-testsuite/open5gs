@@ -35,6 +35,9 @@ jobs:
         source <(curl -s https://raw.githubusercontent.com/cncf/cnf-testsuite/main/curl_install.sh)
         source cluster.env
         export KUBECONFIG=$(pwd)/$CLUSTER.conf
+    - name: Check Testsuite
+      run: |
+        export PATH=$HOME/.cnf-testsuite:$PATH
         cnf-testsuite version
     - name: Delete Cluster
       if: ${{ always() }}
