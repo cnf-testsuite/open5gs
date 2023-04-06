@@ -6,6 +6,9 @@
 #### Install RAN & UE
 `./cnf-testsuite cnf_setup cnf-config=./sample-ueransim/cnf-testsuite.yml`
       
-#### Run CNF Testsuite 
+#### Run CNF Testsuite cert (quickly) 
 `./cnf-testsuite cert ~cert_resilience ~cni_compatible`
+
+#### Run CNF Testsuite workload 
+`./cnf-testsuite workload`
 
