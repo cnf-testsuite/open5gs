@@ -13,16 +13,12 @@ jobs:
     name: Crystal Specs
     runs-on: [ubuntu-latest]
     steps:
-    - name: Cleanup Tmp DIR
-      run: |
-        sudo rm -rf /tmp/*
     - name: Checkout code
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Create Kind Cluster 
       run: |
-        cat /tmp/cluster.yml
         export CLUSTER=$(uuidgen)
         echo "export CLUSTER=$CLUSTER" > cluster.env
         echo kind create cluster --name $CLUSTER --config=/tmp/cluster.yml --kubeconfig ./$CLUSTER.conf
