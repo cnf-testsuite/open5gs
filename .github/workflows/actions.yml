@@ -39,6 +39,16 @@ jobs:
       run: |
         export PATH=$HOME/.cnf-testsuite:$PATH
         cnf-testsuite version
+    - name: Install Open5gs 
+      run: |
+        export PATH=$HOME/.cnf-testsuite:$PATH
+        cnf-testsuite version
+        cnf-testsuite -l info cnf_setup cnf-config=./sample-open5gs/cnf-testsuite.yml
+        cnf-testsuite -l info cnf_setup cnf-config=./sample-ueransim/cnf-testsuite.yml
+    - name: Run Cert for Open5gs 
+      run: |
+        export PATH=$HOME/.cnf-testsuite:$PATH
+        cnf-testsuite cert ~cert_resilience ~cni_compatible 
     - name: Delete Cluster
       if: ${{ always() }}
       run: |
