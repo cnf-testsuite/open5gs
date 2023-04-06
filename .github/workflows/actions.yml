@@ -26,16 +26,10 @@ jobs:
         kind create cluster --name $CLUSTER --kubeconfig ./$CLUSTER.conf
         export KUBECONFIG=$(pwd)/$CLUSTER.conf
         kubectl get nodes 
-    - name: Install Crystal
-      uses: crystal-lang/install-crystal@v1
-      with:
-        crystal: 1.6.2
     - name: Setup CNF-Conformance
       run: |
         helm repo add stable https://cncf.gitlab.io/stable
         git fetch --all --tags --force
-        shards install  
-        echo "RUNNER: $RUNNER_NAME"
     - name: Install Testsuite
       run: |
         source <(curl -s https://raw.githubusercontent.com/cncf/cnf-testsuite/main/curl_install.sh)
