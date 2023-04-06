@@ -1,0 +1,57 @@
+name: Crystal Specs
+on:
+  push:
+    paths:
+      - '**'
+      - '!**.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!**.md'
+jobs:
+  test:
+    name: Crystal Specs
+    runs-on: [ubuntu-latest]
+    steps:
+    - name: Cleanup Tmp DIR
+      run: |
+        sudo rm -rf /tmp/*
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Create Kind Cluster 
+      run: |
+        cat /tmp/cluster.yml
+        export CLUSTER=$(uuidgen)
+        echo "export CLUSTER=$CLUSTER" > cluster.env
+        echo kind create cluster --name $CLUSTER --config=/tmp/cluster.yml --kubeconfig ./$CLUSTER.conf
+        kind --version
+        kind create cluster --name $CLUSTER --config=/tmp/cluster.yml --kubeconfig ./$CLUSTER.conf
+        export KUBECONFIG=$(pwd)/$CLUSTER.conf
+        kubectl get nodes 
+    - name: Install Crystal
+      uses: crystal-lang/install-crystal@v1
+      with:
+        crystal: 1.6.2
+    - name: Setup CNF-Conformance
+      run: |
+        helm repo add stable https://cncf.gitlab.io/stable
+        git fetch --all --tags --force
+        shards install  
+        echo "RUNNER: $RUNNER_NAME"
+    - name: Install Testsuite
+      run: |
+        source <(curl -s https://raw.githubusercontent.com/cncf/cnf-testsuite/main/curl_install.sh)
+        source cluster.env
+        export KUBECONFIG=$(pwd)/$CLUSTER.conf
+    - name: Testsuite Version
+      run: | 
+        cnf-testsuite version
+    - name: Delete Cluster
+      if: ${{ always() }}
+      run: |
+        source cluster.env
+        kind delete cluster --name $CLUSTER
+        docker container prune -f || true
+        docker volume prune -f || true
